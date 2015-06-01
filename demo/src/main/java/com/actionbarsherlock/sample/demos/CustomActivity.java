@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.rampo.updatechecker.UpdateChecker;
 import com.rampo.updatechecker.UpdateCheckerResult;
+import com.rampo.updatechecker.data.UpdateEntity;
+import com.rampo.updatechecker.data.UpdateItemEntity;
 
 public class CustomActivity extends Activity implements UpdateCheckerResult {
     TextView result;
@@ -57,24 +59,24 @@ public class CustomActivity extends Activity implements UpdateCheckerResult {
      * versionDownloadable isn't equal to manifest versionName -> New update available.
      * Show the Notice because it's the first time or the number of the checks made is a multiple of the argument of setSuccessfulChecksRequired(int) method. (If you don't call setSuccessfulChecksRequired(int) the default is 5).
      *
-     * @param versionDownloadable version downloadable from the Store.
+     * @param updateItemEntity version downloadable from the Store.
      * @see com.rampo.updatechecker.UpdateChecker#setSuccessfulChecksRequired(int)
      */
     @Override
-    public void foundUpdateAndShowIt(String versionDownloadable) {
-        result.setText("Update available\n" + "Version downloadable: " + versionDownloadable + "\nVersion installed: " + getVersionInstalled());
+    public void foundUpdateAndShowIt(UpdateItemEntity updateItemEntity) {
+        result.setText("Update available\n" + "Version downloadable: " + updateItemEntity.getVersion() + "\nVersion installed: " + getVersionInstalled());
     }
 
     /**
      * versionDownloadable isn't equal to manifest versionName -> New update available.
      * Show the Notice because it's the first time or the number of the checks made is a multiple of the argument of setSuccessfulChecksRequired(int) method. (If you don't call setSuccessfulChecksRequired(int) the default is 5).
      *
-     * @param versionDownloadable version downloadable from the Store.
+     * @param updateItemEntity version downloadable from the Store.
      * @see com.rampo.updatechecker.UpdateChecker#setSuccessfulChecksRequired(int)
      */
     @Override
-    public void foundUpdateAndDontShowIt(String versionDownloadable) {
-        result.setText("Already Shown\n" + "Version downloadable: " + versionDownloadable + "\nVersion installed: " + getVersionInstalled());
+    public void foundUpdateAndDontShowIt(UpdateItemEntity updateItemEntity) {
+        result.setText("Already Shown\n" + "Version downloadable: " + updateItemEntity.getVersion() + "\nVersion installed: " + getVersionInstalled());
     }
 
     /**

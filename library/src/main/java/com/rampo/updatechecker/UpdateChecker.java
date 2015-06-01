@@ -19,10 +19,17 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 
+import com.google.gson.Gson;
+import com.rampo.updatechecker.data.UpdateEntity;
+import com.rampo.updatechecker.data.UpdateItemEntity;
 import com.rampo.updatechecker.notice.Dialog;
 import com.rampo.updatechecker.notice.Notice;
 import com.rampo.updatechecker.notice.Notification;
 import com.rampo.updatechecker.store.Store;
+
+import org.json.JSONObject;
+
+import java.util.Map;
 
 /**
  * UpdateChecker is a class that can be used by Android Developers to increase the number of their apps' updates.
@@ -42,6 +49,7 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
     static Notice DEFAULT_NOTICE = Notice.DIALOG;
 
     static Activity mActivity;
+    static String url;
     static Store mStore;
     static int mSuccessfulChecksRequired;
     static Notice mNotice;
@@ -52,7 +60,8 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
 
     public UpdateChecker(Activity activity) {
         mActivity = activity;
-        mStore = DEFAULT_STORE;
+//        mStore = DEFAULT_STORE;
+        url = "http://192.168.200.40:8080/huoyuncheng";
         mSuccessfulChecksRequired = DEFAULT_SUCCESSFUL_CHECKS_REQUIRED;
         mNotice = DEFAULT_NOTICE;
         mNoticeIconResId = DEFAULT_NOTICE_ICON_RES_ID;
@@ -125,7 +134,7 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
      * Start the process
      */
     public static void start() {
-        ASyncCheck asynctask = new ASyncCheck(mStore, mCheckResultCallback, mActivity);
+        ASyncCheck asynctask = new ASyncCheck(url, mCheckResultCallback, mActivity);
         asynctask.execute();
     }
 
@@ -136,11 +145,22 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
      */
     @Override
     public void versionDownloadableFound(String versionDownloadable) {
-        if (Comparator.isVersionDownloadableNewer(mActivity, versionDownloadable)) {
+        Gson gson = new Gson();
+        UpdateEntity entity = gson.fromJson(versionDownloadable, UpdateEntity.class);
+        if(entity == null){
+            mLibraryResultCallaback.returnStoreError();
+            return;
+        }
+        if(entity.getAndroid() == null){
+            mLibraryResultCallaback.returnStoreError();
+            return;
+        }
+        UpdateItemEntity android = entity.getAndroid();
+        if (Comparator.isVersionDownloadableNewer(mActivity, android.getVersion())) {
             if (hasToShowNotice(versionDownloadable) && !hasUserTappedToNotShowNoticeAgain(versionDownloadable)) {
-                mLibraryResultCallaback.foundUpdateAndShowIt(versionDownloadable);
+                mLibraryResultCallaback.foundUpdateAndShowIt(android);
             } else {
-                mLibraryResultCallaback.foundUpdateAndDontShowIt(versionDownloadable);
+                mLibraryResultCallaback.foundUpdateAndDontShowIt(android);
             }
         } else { // No new update available
             mLibraryResultCallaback.returnUpToDate(versionDownloadable);
@@ -187,15 +207,15 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
      * versionDownloadable isn't equal to manifest versionName -> New update available.
      * Show the Notice because it's the first time or the number of the checks made is a multiple of the argument of setSuccessfulChecksRequired(int) method. (If you don't call setSuccessfulChecksRequired(int) the default is 5).
      *
-     * @param versionDownloadable version downloadable from the Store.
+     * @param updateItemEntity version downloadable from the Store.
      * @see com.rampo.updatechecker.UpdateChecker#setSuccessfulChecksRequired(int)
      */
     @Override
-    public void foundUpdateAndShowIt(String versionDownloadable) {
+    public void foundUpdateAndShowIt(UpdateItemEntity updateItemEntity) {
         if (mNotice == Notice.NOTIFICATION) {
             showNotification();
         } else if (mNotice == Notice.DIALOG) {
-            showDialog(versionDownloadable);
+            showDialog(updateItemEntity);
         }
     }
 
@@ -203,11 +223,11 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
      * versionDownloadable isn't equal to manifest versionName -> New update available.
      * Show the Notice because it's the first time or the number of the checks made is a multiple of the argument of setSuccessfulChecksRequired(int) method. (If you don't call setSuccessfulChecksRequired(int) the default is 5).
      *
-     * @param versionDownloadable version downloadable from the Store.
+     * @param updateItemEntity version downloadable from the Store.
      * @see com.rampo.updatechecker.UpdateChecker#setSuccessfulChecksRequired(int)
      */
     @Override
-    public void foundUpdateAndDontShowIt(String versionDownloadable) {
+    public void foundUpdateAndDontShowIt(UpdateItemEntity updateItemEntity) {
 
     }
 
@@ -285,8 +305,8 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
     /**
      * Show Dialog
      */
-    public void showDialog(String versionDownloadable) {
-        Dialog.show(mActivity, mStore, versionDownloadable, mNoticeIconResId);
+    public void showDialog(UpdateItemEntity updateItemEntity) {
+        Dialog.show(mActivity,  updateItemEntity, mNoticeIconResId);
     }
 
     /**

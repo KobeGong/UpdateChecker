@@ -26,6 +26,8 @@ import android.net.Uri;
 
 import com.rampo.updatechecker.R;
 import com.rampo.updatechecker.UpdateChecker;
+import com.rampo.updatechecker.data.UpdateEntity;
+import com.rampo.updatechecker.data.UpdateItemEntity;
 import com.rampo.updatechecker.store.Store;
 
 /**
@@ -37,22 +39,19 @@ import com.rampo.updatechecker.store.Store;
  */
 public class Dialog {
 
-    public static void show(final Context context, final Store store, final String versionDownloadable, final int dialogIconResId) {
+    public static void show(final Context context, UpdateItemEntity updateItemEntity, final int dialogIconResId) {
         try {
-            String storeName = null;
-            if (store == Store.GOOGLE_PLAY) {
-                storeName = context.getString(R.string.googlePlay);
-            } else if (store == Store.AMAZON) {
-                storeName = context.getString(R.string.amazonStore);
-            }
+            final UpdateItemEntity android = updateItemEntity;
+            if(updateItemEntity == null)
+                return;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             String appName = null;
             try {
                 appName = (String) context.getPackageManager().getApplicationLabel(context.getPackageManager().getApplicationInfo(context.getPackageName(), 0));
             } catch (PackageManager.NameNotFoundException ignored) {
             }
-            alertDialogBuilder.setTitle(context.getResources().getString(R.string.newUpdateAvailable));
-            alertDialogBuilder.setMessage(context.getResources().getString(R.string.downloadFor, appName, storeName))
+            alertDialogBuilder.setTitle(android.getTitle());
+            alertDialogBuilder.setMessage(android.getNote())
                     .setCancelable(true)
                     .setPositiveButton(context.getString(R.string.dialogPositiveButton), new DialogInterface.OnClickListener() {
                         @Override
@@ -70,7 +69,7 @@ public class Dialog {
                     .setNegativeButton(context.getString(R.string.dialogNegativeButton), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            userHasTappedToNotShowNoticeAgain(context, versionDownloadable);
+                            userHasTappedToNotShowNoticeAgain(context, android.getVersion());
                             dialog.cancel();
                         }
 

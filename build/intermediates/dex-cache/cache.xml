@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\android-studio-sdk\extras\android\m2repository\com\android\support\support-v4\19.0.1\support-v4-19.0.1.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="587da9a481ffd341d2fa091704489b89845ddacd">
+        <dex dex="E:\AOS\UpdateChecker\demo\build\intermediates\pre-dexed\debug\support-v4-19.0.1-80a0796fa5df9038889b5defa351d59efcd2fb8b.jar" />
+    </item>
+    <item
+        jar="E:\AOS\UpdateChecker\demo\build\intermediates\exploded-aar\com.github.rampo.updatechecker\library\2.1.6\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="0e9649764dca961d55512974ce7e45ca5d079d3e">
+        <dex dex="E:\AOS\UpdateChecker\demo\build\intermediates\pre-dexed\debug\classes-119b6c7c0cf5f2a1e0d8187372e9661c5b7e8f74.jar" />
+    </item>
+    <item
+        jar="C:\Users\kobe.gong\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.2.4\a60a5e993c98c864010053cb901b7eab25306568\gson-2.2.4.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="a60a5e993c98c864010053cb901b7eab25306568">
+        <dex dex="E:\AOS\UpdateChecker\demo\build\intermediates\pre-dexed\debug\gson-2.2.4-9ce77fac91cb21da8e03ec737e03c0e9af68a2fa.jar" />
+    </item>
+
+</items>

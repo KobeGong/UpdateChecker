@@ -28,6 +28,7 @@ android {
 }
 dependencies {
     compile 'com.android.support:support-v4:19.0.1'
+    compile 'com.google.code.gson:gson:2.2.4'
 }
 
 //apply from: '../maven_push.gradle'

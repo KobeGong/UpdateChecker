@@ -32,6 +32,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,6 +44,7 @@ import java.io.InputStreamReader;
  */
 class ASyncCheck extends AsyncTask<String, Integer, Integer> {
     private static final String PLAY_STORE_ROOT_WEB = "https://play.google.com/store/apps/details?id=";
+    private static final String PLAY_STORE_WANDOUJIA = "http://www.wandoujia.com/apps/";
     private static final String PLAY_STORE_HTML_TAGS_TO_GET_RIGHT_POSITION = "itemprop=\"softwareVersion\"> ";
     private static final String PLAY_STORE_HTML_TAGS_TO_REMOVE_USELESS_CONTENT = "  </div> </div>";
     private static final String PLAY_STORE_PACKAGE_NOT_PUBLISHED_IDENTIFIER = "We're sorry, the requested URL was not found on this server.";
@@ -57,13 +59,15 @@ class ASyncCheck extends AsyncTask<String, Integer, Integer> {
     private static final int PACKAGE_NOT_PUBLISHED = 3;
     private static final int STORE_ERROR = 4;
 
+    String url;
     Store mStore;
     Context mContext;
     ASyncCheckResult mResultInterface;
     String mVersionDownloadable;
 
-    ASyncCheck(Store store, ASyncCheckResult resultInterface, Context activity) {
-        this.mStore = store;
+    ASyncCheck(String url, ASyncCheckResult resultInterface, Context activity) {
+//        this.mStore = store;
+        this.url = url;
         this.mResultInterface = resultInterface;
         this.mContext = activity;
     }
@@ -76,29 +80,33 @@ class ASyncCheck extends AsyncTask<String, Integer, Integer> {
                 HttpConnectionParams.setConnectionTimeout(params, 4000);
                 HttpConnectionParams.setSoTimeout(params, 5000);
                 HttpClient client = new DefaultHttpClient(params);
-                if (mStore == Store.GOOGLE_PLAY) {
-                    HttpGet request = new HttpGet(PLAY_STORE_ROOT_WEB + mContext.getPackageName()); // Set the right Play Store page by getting package name.
-                    HttpResponse response = client.execute(request);
-                    InputStream is = response.getEntity().getContent();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        if (line.contains(PLAY_STORE_HTML_TAGS_TO_GET_RIGHT_POSITION)) { // Obtain HTML line contaning version available in Play Store
-                            String containingVersion = line.substring(line.lastIndexOf(PLAY_STORE_HTML_TAGS_TO_GET_RIGHT_POSITION) + 28);  // Get the String starting with version available + Other HTML tags
-                            String[] removingUnusefulTags = containingVersion.split(PLAY_STORE_HTML_TAGS_TO_REMOVE_USELESS_CONTENT); // Remove useless HTML tags
-                            mVersionDownloadable = removingUnusefulTags[0]; // Obtain version available
-                        } else if (line.contains(PLAY_STORE_PACKAGE_NOT_PUBLISHED_IDENTIFIER)) { // This packages has not been found in Play Store
-                            return PACKAGE_NOT_PUBLISHED;
-                        }
-                    }
-                    if (mVersionDownloadable == null) {
-                        return STORE_ERROR;
-                    } else if (containsNumber(mVersionDownloadable)) {
-                        return VERSION_DOWNLOADABLE_FOUND;
-                    } else {
-                        return MULTIPLE_APKS_PUBLISHED;
-                    }
-                } else if (mStore == Store.AMAZON) {
+//                if (mStore == Store.GOOGLE_PLAY) {
+                HttpGet request = new HttpGet(url + "/update.json"/* + mContext.getPackageName()*/); // Set the right Play Store page by getting package name.
+                HttpResponse response = client.execute(request);
+                InputStream is = response.getEntity().getContent();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                String line;
+                StringBuffer sb = new StringBuffer();
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+//                        if (line.contains(PLAY_STORE_HTML_TAGS_TO_GET_RIGHT_POSITION)) { // Obtain HTML line contaning version available in Play Store
+//                            String containingVersion = line.substring(line.lastIndexOf(PLAY_STORE_HTML_TAGS_TO_GET_RIGHT_POSITION) + 28);  // Get the String starting with version available + Other HTML tags
+//                            String[] removingUnusefulTags = containingVersion.split(PLAY_STORE_HTML_TAGS_TO_REMOVE_USELESS_CONTENT); // Remove useless HTML tags
+//                            mVersionDownloadable = removingUnusefulTags[0]; // Obtain version available
+//                        } else if (line.contains(PLAY_STORE_PACKAGE_NOT_PUBLISHED_IDENTIFIER)) { // This packages has not been found in Play Store
+//                            return PACKAGE_NOT_PUBLISHED;
+//                        }
+                }
+                Log.d(Constants.LOG_TAG, sb.toString());
+                mVersionDownloadable = sb.toString();
+                if (mVersionDownloadable == null) {
+                    return STORE_ERROR;
+                } else if (containsNumber(mVersionDownloadable)) {
+                    return VERSION_DOWNLOADABLE_FOUND;
+                } else {
+                    return MULTIPLE_APKS_PUBLISHED;
+                }
+               /* } else if (mStore == Store.AMAZON) {
                     HttpGet request = new HttpGet(AMAZON_STORE_ROOT_WEB + mContext.getPackageName()); // Set the right Amazon App Store page by getting package name.
                     HttpResponse response = client.execute(request);
                     InputStream is = response.getEntity().getContent();
@@ -115,7 +123,7 @@ class ASyncCheck extends AsyncTask<String, Integer, Integer> {
                             return PACKAGE_NOT_PUBLISHED;
                         }
                     }
-                }
+                }*/
             } catch (IOException connectionError) {
                 Network.logConnectionError();
                 return NETWORK_ERROR;
@@ -123,7 +131,7 @@ class ASyncCheck extends AsyncTask<String, Integer, Integer> {
         } else {
             return NETWORK_ERROR;
         }
-        return null;
+//        return null;
     }
 
     /**
