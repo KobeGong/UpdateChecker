@@ -3,12 +3,12 @@ apply plugin: 'android'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
-
+    resourcePrefix "kg__"
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.compileSdkVersion
-        //versionName project.VERSION_NAME
-        //versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName project.VERSION_NAME
+        versionCode Integer.parseInt(project.VERSION_CODE)
         // See AndroidManifest.xml, versionName and versionCode are different for test purposes
     }
 

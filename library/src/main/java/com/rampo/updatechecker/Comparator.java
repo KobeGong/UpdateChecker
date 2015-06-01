@@ -21,8 +21,9 @@ import android.content.pm.PackageManager;
 public class Comparator {
     /**
      * Compare the string versionDownloadable to the version installed of the app.
-     *
+     * @param mActivity Activity.
      * @param versionDownloadable String to compare to the version installed of the app.
+     * @return true if new version is downloadable.
      */
     public static boolean isVersionDownloadableNewer(Activity mActivity, String versionDownloadable) {
         String versionInstalled = null;
@@ -39,9 +40,9 @@ public class Comparator {
 
     /**
      * https://stackoverflow.com/questions/6701948/efficient-way-to-compare-version-strings-in-java
-     * <p/>
+     * <p>
      * Compares two version strings.
-     * <p/>
+     * </p>
      * Use this instead of String.compareTo() for a non-lexicographical
      * comparison that works for version strings. e.g. "1.10".compareTo("1.6").
      *
@@ -50,7 +51,7 @@ public class Comparator {
      * @return The result is a negative integer if str1 is _numerically_ less than str2.
      * The result is a positive integer if str1 is _numerically_ greater than str2.
      * The result is zero if the strings are _numerically_ equal.
-     * @note It does not work if "1.10" is supposed to be equal to "1.10.0".
+     * It does not work if "1.10" is supposed to be equal to "1.10.0".
      */
     public static Integer versionCompareNumerically(String str1, String str2) {
         String[] vals1 = str1.split("\\.");

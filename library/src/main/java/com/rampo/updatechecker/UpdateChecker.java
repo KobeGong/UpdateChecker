@@ -18,7 +18,6 @@ package com.rampo.updatechecker;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
-
 import com.google.gson.Gson;
 import com.rampo.updatechecker.data.UpdateEntity;
 import com.rampo.updatechecker.data.UpdateItemEntity;
@@ -27,9 +26,6 @@ import com.rampo.updatechecker.notice.Notice;
 import com.rampo.updatechecker.notice.Notification;
 import com.rampo.updatechecker.store.Store;
 
-import org.json.JSONObject;
-
-import java.util.Map;
 
 /**
  * UpdateChecker is a class that can be used by Android Developers to increase the number of their apps' updates.
@@ -204,7 +200,7 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
     }
 
     /**
-     * versionDownloadable isn't equal to manifest versionName -> New update available.
+     * versionDownloadable isn't equal to manifest versionName and new update available.
      * Show the Notice because it's the first time or the number of the checks made is a multiple of the argument of setSuccessfulChecksRequired(int) method. (If you don't call setSuccessfulChecksRequired(int) the default is 5).
      *
      * @param updateItemEntity version downloadable from the Store.
@@ -220,7 +216,7 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
     }
 
     /**
-     * versionDownloadable isn't equal to manifest versionName -> New update available.
+     * versionDownloadable isn't equal to manifest versionName and new update available.
      * Show the Notice because it's the first time or the number of the checks made is a multiple of the argument of setSuccessfulChecksRequired(int) method. (If you don't call setSuccessfulChecksRequired(int) the default is 5).
      *
      * @param updateItemEntity version downloadable from the Store.
@@ -232,7 +228,7 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
     }
 
     /**
-     * versionDownloadable is equal to manifest versionName -> No new update available.
+     * versionDownloadable is equal to manifest versionName and no new update available.
      * Don't show the Notice
      *
      * @param versionDonwloadable version downloadable from the Store.
@@ -304,6 +300,7 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
 
     /**
      * Show Dialog
+     * @param updateItemEntity the downloadable data.
      */
     public void showDialog(UpdateItemEntity updateItemEntity) {
         Dialog.show(mActivity,  updateItemEntity, mNoticeIconResId);
@@ -354,7 +351,6 @@ public class UpdateChecker implements ASyncCheckResult, UpdateCheckerResult {
      * @param fragmentActivity         Required.
      * @param successfulChecksRequired The number of checks after the notification will be shown.
      */
-    @Deprecated
     public static void checkForNotification(FragmentActivity fragmentActivity, int successfulChecksRequired) {
     }
 

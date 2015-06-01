@@ -25,7 +25,7 @@ import com.rampo.updatechecker.data.UpdateItemEntity;
  */
 public interface UpdateCheckerResult {
     /**
-     * versionDonwloadable isn't equal to manifest versionName -> New update available.
+     * versionDonwloadable isn't equal to manifest versionName and new update available.
      * Show the Notice because it's the first time or the number of the checks made is a multiple of the argument of setSuccessfulChecksRequired(int) method. (If you don't call setSuccessfulChecksRequired(int) the default is 5).
      *
      * @param updateEntity version downloadable from the Store.
@@ -34,7 +34,7 @@ public interface UpdateCheckerResult {
     public void foundUpdateAndShowIt(UpdateItemEntity updateEntity);
 
     /**
-     * versionDonwloadable isn't equal to manifest versionName -> New update available.
+     * versionDonwloadable isn't equal to manifest versionName and new update available.
      * Show the Notice because it's the first time or the number of the checks made is a multiple of the argument of setSuccessfulChecksRequired(int) method. (If you don't call setSuccessfulChecksRequired(int) the default is 5).
      *
      * @param updateEntity version downloadable from the Store.
@@ -43,7 +43,7 @@ public interface UpdateCheckerResult {
     public void foundUpdateAndDontShowIt(UpdateItemEntity updateEntity);
 
     /**
-     * versionDonwloadable is equal to manifest versionName -> No new update available.
+     * versionDonwloadable is equal to manifest versionName and no new update available.
      * Don't show the Notice
      *
      * @param versionDonwloadable version downloadable from the Store.

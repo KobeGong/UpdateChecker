@@ -1,15 +1,21 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.0.1'
+        //自动化maven打包插件
+        classpath 'com.github.dcendents:android-maven-plugin:1.2'
+        //自动上传至Bintray平台插件
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.0"
     }
 }
 
 allprojects {
+    version = VERSION_NAME
+    group = GROUP
     repositories {
-        mavenCentral()
+        jcenter()
     }
 }
 
@@ -19,18 +25,18 @@ ext {
     compileSdkVersion = 19
     buildToolsVersion = "19.1.0"
 }
-
-def isReleaseBuild() {
-    return version.contains("_develop") == false
-}
-
-allprojects {
-    version = VERSION_NAME
-    group = GROUP
-
-    repositories {
-        mavenCentral()
-    }
-}
-
-apply plugin: 'android-reporting'
+//
+//def isReleaseBuild() {
+//    return version.contains("_develop") == false
+//}
+//
+//allprojects {
+//    version = VERSION_NAME
+//    group = GROUP
+//
+//    repositories {
+//        mavenCentral()
+//    }
+//}
+//
+//apply plugin: 'android-reporting'

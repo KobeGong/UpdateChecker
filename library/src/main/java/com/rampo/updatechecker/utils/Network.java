@@ -10,6 +10,8 @@ import com.rampo.updatechecker.data.Constants;
 public class Network {
     /**
      * Check if a network is available
+     * @param context Context.
+     * @return true if network is available.
      */
     public static boolean isAvailable(Context context) {
         boolean connected = false;

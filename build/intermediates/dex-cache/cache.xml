@@ -9,11 +9,11 @@
         <dex dex="E:\AOS\UpdateChecker\demo\build\intermediates\pre-dexed\debug\support-v4-19.0.1-80a0796fa5df9038889b5defa351d59efcd2fb8b.jar" />
     </item>
     <item
-        jar="E:\AOS\UpdateChecker\demo\build\intermediates\exploded-aar\com.github.rampo.updatechecker\library\2.1.6\classes.jar"
+        jar="E:\AOS\UpdateChecker\demo\build\intermediates\exploded-aar\com.kobe.updatechecker\library\2.1.6\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="0e9649764dca961d55512974ce7e45ca5d079d3e">
-        <dex dex="E:\AOS\UpdateChecker\demo\build\intermediates\pre-dexed\debug\classes-119b6c7c0cf5f2a1e0d8187372e9661c5b7e8f74.jar" />
+        sha1="33daeb25def7dfd88587a2dc1f7d82eaa654130e">
+        <dex dex="E:\AOS\UpdateChecker\demo\build\intermediates\pre-dexed\debug\classes-70e3903e116f543a687035cea0b4ea26b554f307.jar" />
     </item>
     <item
         jar="C:\Users\kobe.gong\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.2.4\a60a5e993c98c864010053cb901b7eab25306568\gson-2.2.4.jar"
