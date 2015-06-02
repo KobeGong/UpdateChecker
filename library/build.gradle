@@ -21,10 +21,6 @@ android {
     }
 
 }
-dependencies {
-    compile 'com.android.support:support-v4:19.0.1'
-    compile 'com.google.code.gson:gson:2.2.4'
-}
 
 def siteUrl = 'https://github.com/KobeGong/UpdateChecker' // 项目的主页
 def gitUrl = 'https://github.com/KobeGong/UpdateChecker.git' // Git仓库的url
@@ -48,7 +44,7 @@ install {
                 developers {
                     developer {
                         id 'KobeGong'    //填写的一些基本信息
-                        name 'KobeGong'
+                        name 'Kobe Gong'
                         email 'kobe.gong.5@gmail.com'
                     }
                 }
@@ -61,6 +57,12 @@ install {
         }
     }
 }
+
+dependencies {
+    compile 'com.android.support:support-v4:19.0.1'
+    compile 'com.google.code.gson:gson:2.2.4'
+}
+
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
@@ -85,7 +87,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "BounceProgressBar"    //发布到JCenter上的项目名字
+        name = "AppUpdateChecker"    //发布到JCenter上的项目名字
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
